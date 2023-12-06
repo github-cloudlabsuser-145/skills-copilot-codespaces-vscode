@@ -1,0 +1,31 @@
+# Create a GirHub action to email a report from a file at 6 a.m. every day.
+# The report file is stored in the repository.
+
+name: Email a report
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+  email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Email a report
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MY_USERNAME }}
+          password: ${{ secrets.MY_PASSWORD }}
+          subject: 'Report'
+          body: 'See the attachment.'
+          from: ${{ secrets.MY_USERNAME }}
+          to: ${{ secrets.MY_USERNAME }}
+          attachments: |
+            ./report.txt
+```
+
+## License
+
+[MIT](LICENSE)
