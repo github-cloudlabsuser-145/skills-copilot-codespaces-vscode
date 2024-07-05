@@ -1,0 +1,29 @@
+name: Email Report
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Send email
+        run: |
+          echo "Subject: Daily Report" > report.txt
+          echo "Hello, here is your daily report!" >> report.txt
+          echo "You can find the full report in the attached file." >> report.txt
+          echo "Sending email..." 
+          cat report.txt | mail -s "Daily Report" -a report.txt recipient@example.com
